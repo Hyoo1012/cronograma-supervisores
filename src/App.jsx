@@ -19,7 +19,7 @@ export default function App() {
   return (
     <div className="app">
       <header className="header">
-        <h1>🛠️ Cronograma de Supervisores</h1>
+        <h1>Cronograma de Supervisores</h1>
         <p className="muted">
           Genera automáticamente el cronograma de los 3 supervisores respetando las reglas del régimen.
         </p>
