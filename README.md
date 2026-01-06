@@ -1,21 +1,20 @@
-
 # Cronograma de Supervisores de Perforación
 
-Aplicación web desarrollada en **React + JavaScript** que genera automáticamente
-el cronograma de turnos para **3 supervisores de perforación**, cumpliendo
+Aplicación web desarrollada en React y JavaScript que genera automáticamente
+el cronograma de turnos para tres supervisores de perforación, cumpliendo
 estrictamente las reglas definidas en la prueba técnica.
 
 ---
 
 ## Objetivo del proyecto
 
-Planificar los turnos de 3 supervisores de perforación asegurando que:
+Planificar los turnos de tres supervisores de perforación asegurando que:
 
-- Siempre haya **exactamente 2 supervisores perforando**
-- **Nunca** haya 3 supervisores perforando
-- **Nunca** haya solo 1 supervisor perforando (una vez que S3 entra)
-- El **Supervisor 1 (S1)** mantiene siempre su régimen original
-- Los **Supervisores 2 y 3 (S2 y S3)** se ajustan dinámicamente para cumplir las reglas
+- Siempre haya exactamente dos supervisores perforando.
+- Nunca haya tres supervisores perforando al mismo tiempo.
+- Nunca haya solo un supervisor perforando, una vez que el Supervisor 3 (S3 entra).
+- El Supervisor 1 (S1) mantiene siempre su régimen completo sin modificaciones.
+- Los Supervisores 2 y 3 (S2 y S3) se ajustan dinámicamente para cumplir las reglas.
 
 ---
 
@@ -25,15 +24,15 @@ Planificar los turnos de 3 supervisores de perforación asegurando que:
 - JavaScript (ES6)
 - HTML5
 - CSS3
-- Netlify (deploy)
-- GitHub (repositorio)
+- GitHub
+- Netlify
 
 ---
 
 ## Definición del ciclo de un supervisor
 
-| Símbolo | Significado |
-|-------|-------------|
+| Símbolo | Descripción |
+|--------|-------------|
 | S | Subida (1 día) |
 | I | Inducción (1 a 5 días) |
 | P | Perforación |
@@ -45,36 +44,70 @@ Planificar los turnos de 3 supervisores de perforación asegurando que:
 
 ## Régimen de trabajo (NxM)
 
-- **N** = Días de trabajo (Subida + Inducción + Perforación)
-- **M** = Días libres (Bajada + Descanso)
-- Descanso real = `M - 2` días
+- N: Días de trabajo (Subida + Inducción + Perforación).
+- M: Días libres (Bajada + Descanso).
+- Días de descanso reales: `M - 2`.
 
 ---
 
 ## Lógica del algoritmo
 
 ### Supervisor 1 (S1)
-- Siempre sigue el régimen completo sin modificaciones.
-- Sirve como referencia para el resto del cronograma.
+- Cumple siempre el régimen completo sin modificaciones.
+- Se utiliza como referencia base para el cronograma.
 
 ### Supervisor 3 (S3)
-- Su día de entrada se calcula con la fórmula:
+- Su día de entrada se calcula a partir del día de bajada de S1.
+- Inicia la perforación luego de completar su subida e inducción.
 
+### Supervisor 2 (S2)
+- Ajusta dinámicamente su ciclo para:
+  - Evitar días con solo un supervisor perforando.
+  - Evitar solapamientos de tres supervisores perforando.
+- Puede volver antes o extender su período de perforación si es necesario.
 
+---
 
-# React + Vite
+## Validaciones implementadas
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+- Alerta cuando existen días con tres supervisores perforando.
+- Alerta cuando existen días con solo un supervisor perforando, una vez que S3 está activo.
+- Detección de patrones inválidos:
+  - S-S
+  - S-B
+  - B-S
+  - B-B
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Interfaz de usuario
 
-## React Compiler
+- Inputs dinámicos para:
+  - Régimen de trabajo (N).
+  - Días de descanso (M).
+  - Días de inducción (1 a 5).
+  - Total de días a simular.
+- Tabla de visualización con:
+  - Cronograma por supervisor.
+  - Estados diferenciados por color.
+  - Fila adicional con la cantidad de supervisores perforando por día.
+- Indicadores visuales en rojo cuando no se cumple la regla de dos supervisores perforando.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Casos de prueba obligatorios
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+El sistema fue diseñado para manejar correctamente los siguientes escenarios:
+
+1. Régimen 14x7 con 5 días de inducción y 90 días de perforación.
+2. Régimen 21x7 con 3 días de inducción y 90 días de perforación.
+3. Régimen 10x5 con 2 días de inducción y 90 días de perforación.
+4. Régimen 14x6 con 4 días de inducción y 950 días de perforación.
+
+---
+
+## Instalación y ejecución local
+
+```bash
+npm install
+npm run dev
