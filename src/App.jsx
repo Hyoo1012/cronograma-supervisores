@@ -9,12 +9,12 @@ export default function App() {
   const [resultado, setResultado] = useState(null);
   const handleCalcular = () => {
     const res = generarCronograma({
-      workDays: parseInt(workDays),
-      restDays: parseInt(restDays),
-      inductionDays: parseInt(inductionDays),
-      totalDays: parseInt(totalDays),
-    });
-    setResultado(res);
+  workDays: parseInt(workDays, 10),
+  restDays: parseInt(restDays, 10),
+  inductionDays: parseInt(inductionDays, 10),
+  totalDays: parseInt(totalDays, 10),
+});
+setResultado(res);
   };
   return (
     <div className="app">
